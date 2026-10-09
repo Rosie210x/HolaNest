@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { Container, Form, Button, Table, Alert, Spinner, Row, Col } from 'react-bootstrap';
 
 import axiosClient from '../api/axiosClient';
 
@@ -55,166 +56,119 @@ export default function CustomerSearchPage() {
   };
 
   return (
-    <div style={{ padding: '2rem', maxWidth: '1000px', margin: '0 auto' }}>
-      <h2>Quản lý & Tìm kiếm Khách hàng</h2>
+    <Container className="py-4" style={{ maxWidth: 1100 }}>
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h2 className="h3 mb-0">Quản lý & Tìm kiếm Khách hàng</h2>
+        <Button as={Link} to="/customers/add" variant="success">
+          + Thêm mới
+        </Button>
+      </div>
 
       {/* Form tìm kiếm */}
-      <form onSubmit={handleSearchSubmit} style={styles.searchForm}>
-        <input
-          type="text"
-          placeholder="Tìm theo Tên..."
-          value={searchName}
-          onChange={(e) => setSearchName(e.target.value)}
-          style={styles.input}
-        />
-        <input
-          type="text"
-          placeholder="Tìm theo Email..."
-          value={searchEmail}
-          onChange={(e) => setSearchEmail(e.target.value)}
-          style={styles.input}
-        />
-        <button type="submit" style={styles.searchBtn}>
-          Tìm kiếm
-        </button>
-        <button type="submit" style={styles.searchBtn}>
-          <Link to={`/customers/add`} style={styles.btnDetail}>
-                        Thêm mới
-                      </Link> 
-        </button>
-        
-      </form>
+      <Form onSubmit={handleSearchSubmit} className="mb-3">
+        <Row className="g-2">
+          <Col md={5}>
+            <Form.Control
+              type="text"
+              placeholder="Tìm theo Tên..."
+              value={searchName}
+              onChange={(e) => setSearchName(e.target.value)}
+            />
+          </Col>
+          <Col md={5}>
+            <Form.Control
+              type="text"
+              placeholder="Tìm theo Email..."
+              value={searchEmail}
+              onChange={(e) => setSearchEmail(e.target.value)}
+            />
+          </Col>
+          <Col md={2} className="d-grid">
+            <Button type="submit" variant="primary">
+              Tìm kiếm
+            </Button>
+          </Col>
+        </Row>
+      </Form>
 
-      {error && <div style={styles.error}>{error}</div>}
+      {error && <Alert variant="danger">{error}</Alert>}
 
       {/* Bảng hiển thị danh sách */}
       {loading ? (
-        <p>Đang tải dữ liệu...</p>
+        <div className="text-center py-4">
+          <Spinner animation="border" className="me-2" />
+          Đang tải dữ liệu...
+        </div>
       ) : (
         <>
-          <table style={styles.table}>
-            <thead>
-              <tr style={{ backgroundColor: '#f2f2f2' }}>
-                <th style={styles.th}>ID</th>
-                <th style={styles.th}>Email</th>
-                <th style={styles.th}>Tên</th>
-
-                <th style={styles.th}>Địa chỉ</th>
-                <th style={styles.th}>Số điện thoại</th>
-                <th style={styles.th}>Doanh thu</th>
-                <th style={styles.th}></th>
-                <th style={styles.th}></th>
-
+          <Table striped bordered hover responsive className="align-middle">
+            <thead className="table-light">
+              <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Tên</th>
+                <th>Địa chỉ</th>
+                <th>Số điện thoại</th>
+                <th className="text-end">Doanh thu</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
               {customers.length > 0 ? (
                 customers.map((c) => (
                   <tr key={c.customerId}>
-                    <td style={styles.td}>{c.customerId}</td>
-                    <td style={styles.td}>{c.email}</td>
-                    <td style={styles.td}>{c.name}</td>
-                    <td style={styles.td}>{c.address}</td>
-                    <td style={styles.td}>{c.mobileNo}</td>
-                    <td style={styles.td}>
+                    <td>{c.customerId}</td>
+                    <td>{c.email}</td>
+                    <td>{c.name}</td>
+                    <td>{c.address}</td>
+                    <td>{c.mobileNo}</td>
+                    <td className="text-end">
                       {c.revenue ? c.revenue.toLocaleString('vi-VN') : 0} VNĐ
                     </td>
-                    <td>
-
-                    </td>
-                    <td style={styles.td}>
-                      <Link to={`/customers/${c.customerId}`} style={styles.btnDetail}>
+                    <td className="text-center">
+                      <Button as={Link} to={`/customers/${c.customerId}`} variant="outline-primary" size="sm">
                         Xem chi tiết
-                      </Link> </td>
+                      </Button>
+                    </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="6" style={{ ...styles.td, textAlign: 'center' }}>
+                  <td colSpan="7" className="text-center text-muted py-3">
                     Không tìm thấy khách hàng nào.
                   </td>
                 </tr>
               )}
             </tbody>
-          </table>
+          </Table>
 
           {/* Thanh phân trang */}
-          <div style={styles.pagination}>
+          <div className="d-flex justify-content-between align-items-center flex-wrap gap-2">
             <span>
               Tổng số: <strong>{totalElements}</strong> kết quả (Trang {page + 1}/{totalPages})
             </span>
 
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
-              <button
+            <div className="d-flex gap-2">
+              <Button
+                variant="outline-secondary"
+                size="sm"
                 disabled={page === 0}
                 onClick={() => setPage((prev) => prev - 1)}
-                style={styles.pageBtn}
               >
                 Trang trước
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="outline-secondary"
+                size="sm"
                 disabled={page >= totalPages - 1}
                 onClick={() => setPage((prev) => prev + 1)}
-                style={styles.pageBtn}
               >
                 Trang sau
-              </button>
+              </Button>
             </div>
           </div>
         </>
       )}
-    </div>
+    </Container>
   );
 }
-
-const styles = {
-  searchForm: {
-    display: 'flex',
-    gap: '1rem',
-    marginBottom: '1.5rem',
-  },
-  input: {
-    flex: 1,
-    padding: '0.6rem',
-    borderRadius: '4px',
-    border: '1px solid #ccc',
-  },
-  searchBtn: {
-    padding: '0.6rem 1.2rem',
-    backgroundColor: '#288ea7',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-  },
-  table: {
-    width: '100%',
-    borderCollapse: 'collapse',
-    marginTop: '1rem',
-  },
-  th: {
-    border: '1px solid #ddd',
-    padding: '10px',
-    textAlign: 'left',
-  },
-  td: {
-    border: '1px solid #ddd',
-    padding: '10px',
-  },
-  pagination: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: '1rem',
-  },
-  pageBtn: {
-    padding: '0.4rem 0.8rem',
-    borderRadius: '4px',
-    border: '1px solid #ccc',
-    cursor: 'pointer',
-  },
-  error: {
-    color: 'red',
-    marginBottom: '1rem',
-  },
-};

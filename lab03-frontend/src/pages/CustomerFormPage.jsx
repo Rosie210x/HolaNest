@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { Container, Card, Form, Button, Alert, Spinner, InputGroup } from 'react-bootstrap';
 import axiosClient from '../api/axiosClient';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -131,132 +132,86 @@ export default function CustomerFormPage() {
     }
   };
 
-  if (loading) return <div style={styles.container}>Đang tải thông tin...</div>;
+  if (loading) {
+    return (
+      <Container className="py-5 text-center">
+        <Spinner animation="border" className="me-2" />
+        Đang tải thông tin...
+      </Container>
+    );
+  }
+
+  const renderField = ({ name, label, type = 'text', placeholder, ...rest }) => (
+    <Form.Group className="mb-3" controlId={name}>
+      <Form.Label>
+        {label} <span className="text-danger">*</span>
+      </Form.Label>
+      <Form.Control
+        type={type}
+        name={name}
+        value={formData[name]}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        placeholder={placeholder}
+        isInvalid={!!errors[name]}
+        {...rest}
+      />
+      <Form.Control.Feedback type="invalid">{errors[name]}</Form.Control.Feedback>
+    </Form.Group>
+  );
 
   return (
-    <div style={styles.container}>
-      <div style={styles.card}>
-        <div style={styles.header}>
-          <h2>{isEdit ? 'Chỉnh sửa Khách hàng' : 'Thêm mới Khách hàng'}</h2>
-          <button type="button" onClick={() => navigate(-1)} style={styles.backBtn}>
+    <Container className="d-flex justify-content-center py-4">
+      <Card className="shadow-sm w-100" style={{ maxWidth: 550 }}>
+        <Card.Header className="d-flex justify-content-between align-items-center bg-white py-3">
+          <h2 className="h4 mb-0">{isEdit ? 'Chỉnh sửa Khách hàng' : 'Thêm mới Khách hàng'}</h2>
+          <Button variant="secondary" size="sm" onClick={() => navigate(-1)}>
             ← Quay lại
-          </button>
-        </div>
+          </Button>
+        </Card.Header>
 
-        {error && <div style={styles.error}>{error}</div>}
+        <Card.Body>
+          {error && <Alert variant="danger">{error}</Alert>}
 
-        <form onSubmit={handleSubmit} style={styles.form} noValidate>
-          <div style={styles.formGroup}>
-            <label htmlFor="name">Tên Khách Hàng *</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              style={{ ...styles.input, ...(errors.name ? styles.inputError : {}) }}
-              placeholder="Nhập tên khách hàng"
-            />
-            {errors.name && <span style={styles.fieldErrorText}>{errors.name}</span>}
-          </div>
+          <Form onSubmit={handleSubmit} noValidate>
+            {renderField({ name: 'name', label: 'Tên Khách Hàng', placeholder: 'Nhập tên khách hàng' })}
+            {renderField({ name: 'email', label: 'Email', type: 'email', placeholder: 'email@example.com' })}
+            {renderField({ name: 'address', label: 'Địa chỉ', placeholder: 'Nhập địa chỉ' })}
+            {renderField({ name: 'mobileNo', label: 'Điện thoại', type: 'tel', placeholder: '0901234567' })}
 
-          <div style={styles.formGroup}>
-            <label htmlFor="email">Email *</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              style={{ ...styles.input, ...(errors.email ? styles.inputError : {}) }}
-              placeholder="email@example.com"
-            />
-            {errors.email && <span style={styles.fieldErrorText}>{errors.email}</span>}
-          </div>
+            <Form.Group className="mb-3" controlId="revenue">
+              <Form.Label>
+                Doanh thu <span className="text-danger">*</span>
+              </Form.Label>
+              <InputGroup hasValidation>
+                <Form.Control
+                  type="number"
+                  name="revenue"
+                  min="0"
+                  step="100000"
+                  value={formData.revenue}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  placeholder="0"
+                  isInvalid={!!errors.revenue}
+                />
+                <InputGroup.Text>VNĐ</InputGroup.Text>
+                <Form.Control.Feedback type="invalid">{errors.revenue}</Form.Control.Feedback>
+              </InputGroup>
+            </Form.Group>
 
-          <div style={styles.formGroup}>
-            <label htmlFor="address">Địa chỉ *</label>
-            <input
-              type="text"
-              id="address"
-              name="address"
-              value={formData.address}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              style={{ ...styles.input, ...(errors.address ? styles.inputError : {}) }}
-              placeholder="Nhập địa chỉ"
-            />
-            {errors.address && <span style={styles.fieldErrorText}>{errors.address}</span>}
-          </div>
-
-          <div style={styles.formGroup}>
-            <label htmlFor="mobileNo">Điện thoại *</label>
-            <input
-              type="tel"
-              id="mobileNo"
-              name="mobileNo"
-              value={formData.mobileNo}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              style={{ ...styles.input, ...(errors.mobileNo ? styles.inputError : {}) }}
-              placeholder="0901234567"
-            />
-            {errors.mobileNo && <span style={styles.fieldErrorText}>{errors.mobileNo}</span>}
-          </div>
-
-          <div style={styles.formGroup}>
-            <label htmlFor="revenue">Doanh thu (VND) *</label>
-            <input
-              type="number"
-              id="revenue"
-              name="revenue"
-              min="0"
-              step="100000"
-              value={formData.revenue}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              style={{ ...styles.input, ...(errors.revenue ? styles.inputError : {}) }}
-              placeholder="0"
-            />
-            {errors.revenue && <span style={styles.fieldErrorText}>{errors.revenue}</span>}
-          </div>
-
-          <div style={styles.btnGroup}>
-            <button
-              type="button"
-              onClick={() => navigate(-1)}
-              style={styles.cancelBtn}
-            >
-              Hủy
-            </button>
-            <button
-              type="submit"
-              disabled={submitting}
-              style={styles.submitBtn}
-            >
-              {submitting ? 'Đang lưu...' : isEdit ? 'Cập nhật' : 'Thêm mới'}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+            <div className="d-flex justify-content-end gap-2 mt-4">
+              <Button variant="outline-secondary" onClick={() => navigate(-1)}>
+                Hủy
+              </Button>
+              <Button type="submit" variant="primary" disabled={submitting}>
+                {submitting && <Spinner animation="border" size="sm" className="me-2" />}
+                {submitting ? 'Đang lưu...' : isEdit ? 'Cập nhật' : 'Thêm mới'}
+              </Button>
+            </div>
+          </Form>
+        </Card.Body>
+      </Card>
+    </Container>
   );
 }
-
-const styles = {
-  container: { padding: '2rem', display: 'flex', justifyContent: 'center' },
-  card: { width: '100%', maxWidth: '500px', border: '1px solid #ccc', borderRadius: '8px', padding: '1.5rem', backgroundColor: '#fff' },
-  header: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' },
-  backBtn: { padding: '0.4rem 0.8rem', backgroundColor: '#6c757d', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' },
-  form: { display: 'flex', flexDirection: 'column', gap: '1rem' },
-  formGroup: { display: 'flex', flexDirection: 'column', gap: '0.4rem' },
-  input: { padding: '0.6rem', borderRadius: '4px', border: '1px solid #ccc', outline: 'none' },
-  btnGroup: { display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '1rem' },
-  cancelBtn: { padding: '0.6rem 1.2rem', backgroundColor: '#6c757d', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' },
-  submitBtn: { padding: '0.6rem 1.2rem', backgroundColor: '#007bff', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' },
-  inputError: { borderColor: '#dc3545' },
-  fieldErrorText: { color: '#dc3545', fontSize: '0.85rem' },
-  error: { color: 'red', marginBottom: '1rem' },
-};

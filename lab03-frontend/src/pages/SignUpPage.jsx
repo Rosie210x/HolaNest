@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Form, useActionData, useNavigation, Link } from 'react-router-dom';
+import { Form as RouterForm, useActionData, useNavigation, Link } from 'react-router-dom';
+import { Container, Card, Form, Button, Alert, Spinner } from 'react-bootstrap';
 
 export default function SignUpPage() {
   const actionData = useActionData();
@@ -8,7 +9,7 @@ export default function SignUpPage() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('user'); 
+  const [role, setRole] = useState('user');
   const [errors, setErrors] = useState({ email: '', password: '', role: '' });
 
   const validate = () => {
@@ -50,172 +51,85 @@ export default function SignUpPage() {
   };
 
   return (
-    <div style={styles.container}>
-      <div style={styles.card}>
-        <h2 style={styles.title}>Đăng Ký</h2>
+    <Container className="d-flex justify-content-center py-5">
+      <Card className="shadow-sm w-100" style={{ maxWidth: 420 }}>
+        <Card.Body className="p-4">
+          <Card.Title as="h2" className="text-center mb-4">
+            Đăng Ký
+          </Card.Title>
 
-        {actionData?.error && (
-          <div style={styles.errorMessage}>{actionData.error}</div>
-        )}
+          {actionData?.error && <Alert variant="danger">{actionData.error}</Alert>}
 
-        <Form
-          method="post"
-          onSubmit={handleSubmit}
-          style={styles.form}
-          noValidate
-        >
-          {/* Trường Email */}
-          <div style={styles.formGroup}>
-            <label htmlFor="email">Email:</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              placeholder="email@gmail.com"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-                if (errors.email) setErrors((prev) => ({ ...prev, email: '' }));
-              }}
-              style={{
-                ...styles.input,
-                ...(errors.email ? styles.inputError : {}),
-              }}
-            />
-            {errors.email && (
-              <span style={styles.fieldErrorText}>{errors.email}</span>
-            )}
+          <Form as={RouterForm} method="post" onSubmit={handleSubmit} noValidate>
+            {/* Trường Email */}
+            <Form.Group className="mb-3" controlId="email">
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="email"
+                name="email"
+                placeholder="email@gmail.com"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (errors.email) setErrors((prev) => ({ ...prev, email: '' }));
+                }}
+                isInvalid={!!errors.email}
+              />
+              <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
+            </Form.Group>
+
+            {/* Trường Mật khẩu */}
+            <Form.Group className="mb-3" controlId="password">
+              <Form.Label>Mật khẩu</Form.Label>
+              <Form.Control
+                type="password"
+                name="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  if (errors.password) setErrors((prev) => ({ ...prev, password: '' }));
+                }}
+                isInvalid={!!errors.password}
+              />
+              <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+            </Form.Group>
+
+            {/* Trường Vai trò (Dropdown) */}
+            <Form.Group className="mb-4" controlId="role">
+              <Form.Label>Vai trò</Form.Label>
+              <Form.Select
+                name="role"
+                value={role}
+                onChange={(e) => {
+                  setRole(e.target.value);
+                  if (errors.role) setErrors((prev) => ({ ...prev, role: '' }));
+                }}
+                isInvalid={!!errors.role}
+              >
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </Form.Select>
+              <Form.Control.Feedback type="invalid">{errors.role}</Form.Control.Feedback>
+            </Form.Group>
+
+            <Button type="submit" variant="primary" className="w-100" disabled={isSubmitting}>
+              {isSubmitting ? (
+                <>
+                  <Spinner animation="border" size="sm" className="me-2" />
+                  Đang xử lý...
+                </>
+              ) : (
+                'Đăng Ký'
+              )}
+            </Button>
+          </Form>
+
+          <div className="text-center mt-3 small">
+            Bạn đã có tài khoản? <Link to="/login">Đăng nhập</Link>
           </div>
-
-          {/* Trường Mật khẩu */}
-          <div style={styles.formGroup}>
-            <label htmlFor="password">Mật khẩu:</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-                if (errors.password)
-                  setErrors((prev) => ({ ...prev, password: '' }));
-              }}
-              style={{
-                ...styles.input,
-                ...(errors.password ? styles.inputError : {}),
-              }}
-            />
-            {errors.password && (
-              <span style={styles.fieldErrorText}>{errors.password}</span>
-            )}
-          </div>
-
-          {/* Trường Vai trò (Dropdown) */}
-          <div style={styles.formGroup}>
-            <label htmlFor="role">Vai trò:</label>
-            <select
-              id="role"
-              name="role"
-              value={role}
-              onChange={(e) => {
-                setRole(e.target.value);
-                if (errors.role) setErrors((prev) => ({ ...prev, role: '' }));
-              }}
-              style={{
-                ...styles.input,
-                ...styles.select,
-                ...(errors.role ? styles.inputError : {}),
-              }}
-            >
-              <option value="user">User</option>
-              <option value="admin">Admin</option>
-            </select>
-            {errors.role && (
-              <span style={styles.fieldErrorText}>{errors.role}</span>
-            )}
-          </div>
-
-        
-          <button type="submit" disabled={isSubmitting} style={styles.button}>
-            {isSubmitting ? 'Đang xử lý...' : 'Đăng Ký'}
-          </button>
-        </Form>
-
-        <div style={styles.footerText}>
-          Bạn đã có tài khoản?{' '}
-          <Link to="/login" style={styles.link}>
-            Đăng nhập
-          </Link>
-        </div>
-      </div>
-    </div>
+        </Card.Body>
+      </Card>
+    </Container>
   );
 }
-
-const styles = {
-  container: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: '80vh',
-  },
-  card: {
-    width: '100%',
-    maxWidth: '400px',
-    padding: '2rem',
-    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-    borderRadius: '8px',
-    backgroundColor: '#fff',
-  },
-  title: {
-    textAlign: 'center',
-    marginBottom: '1.5rem',
-  },
-  form: { display: 'flex', flexDirection: 'column', gap: '1rem' },
-  formGroup: { display: 'flex', flexDirection: 'column', gap: '0.4rem' },
-  input: {
-    padding: '0.6rem',
-    borderRadius: '4px',
-    border: '1px solid #ccc',
-    outline: 'none',
-  },
-  select: {
-    backgroundColor: '#fff',
-    cursor: 'pointer',
-  },
-  inputError: {
-    borderColor: '#dc3545',
-  },
-  fieldErrorText: {
-    color: '#dc3545',
-    fontSize: '0.85rem',
-  },
-  button: {
-    padding: '0.75rem',
-    backgroundColor: '#007bff',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    fontWeight: 'bold',
-    marginTop: '0.5rem',
-  },
-  errorMessage: {
-    padding: '0.5rem',
-    backgroundColor: '#f8d7da',
-    color: '#721c24',
-    borderRadius: '4px',
-    marginBottom: '1rem',
-  },
-  footerText: {
-    marginTop: '1.5rem',
-    textAlign: 'center',
-    fontSize: '0.95rem',
-  },
-  link: {
-    color: '#007bff',
-    fontWeight: 'bold',
-    textDecoration: 'none',
-  },
-};

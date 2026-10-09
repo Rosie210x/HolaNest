@@ -35,8 +35,6 @@ export const router = createBrowserRouter([
                             password: password ? password.trim() : '',
                         });
 
-                        // Action chạy ngoài cây React nên không gọi được useContext;
-                        // trả token về để SignInPage lưu vào AuthContext.
                         if (!res?.token) {
                             return { error: 'Không nhận được token từ máy chủ' };
                         }

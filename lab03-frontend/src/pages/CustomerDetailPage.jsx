@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import { Container, Card, Button, Alert, Spinner, Row, Col } from 'react-bootstrap';
 import axiosClient from '../api/axiosClient';
 
 export default function CustomerDetailPage() {
@@ -23,64 +24,61 @@ export default function CustomerDetailPage() {
     fetchCustomer();
   }, [id]);
 
-  if (loading) return <div style={styles.container}>Đang tải thông tin...</div>;
-  if (error) return <div style={styles.container}><p style={{ color: 'red' }}>{error}</p><button onClick={() => navigate(-1)} style={styles.backBtn}>Quay lại</button></div>;
+  if (loading) {
+    return (
+      <Container className="py-5 text-center">
+        <Spinner animation="border" className="me-2" />
+        Đang tải thông tin...
+      </Container>
+    );
+  }
+
+  if (error) {
+    return (
+      <Container className="py-5" style={{ maxWidth: 550 }}>
+        <Alert variant="danger">{error}</Alert>
+        <Button variant="secondary" onClick={() => navigate(-1)}>
+          Quay lại
+        </Button>
+      </Container>
+    );
+  }
+
+  const fields = [
+    ['Tên Khách Hàng', customer.name],
+    ['Email', customer.email],
+    ['Địa chỉ', customer.address || 'N/A'],
+    ['Điện thoại', customer.mobileNo || 'N/A'],
+    ['Doanh thu (VND)', `${customer.revenue ? Number(customer.revenue).toLocaleString('vi-VN') : 0} VNĐ`],
+  ];
 
   return (
-    <div style={styles.container}>
-      <div style={styles.card}>
-        <div style={styles.header}>
-          <h2>Chi tiết Khách hàng</h2>
-          <button onClick={() => navigate(-1)} style={styles.backBtn}>
+    <Container className="d-flex justify-content-center py-4">
+      <Card className="shadow-sm w-100" style={{ maxWidth: 550 }}>
+        <Card.Header className="d-flex justify-content-between align-items-center bg-white py-3">
+          <h2 className="h4 mb-0">Chi tiết Khách hàng</h2>
+          <Button variant="secondary" size="sm" onClick={() => navigate(-1)}>
             ← Quay lại
-          </button>
-        </div>
+          </Button>
+        </Card.Header>
 
-        <div style={styles.infoGroup}>
-          <label style={styles.label}>Tên Khách Hàng:</label>
-          <span style={styles.value}>{customer.name}</span>
-        </div>
+        <Card.Body>
+          {fields.map(([label, value]) => (
+            <Row key={label} className="border-bottom py-2 mx-0">
+              <Col xs={5} className="fw-bold text-secondary ps-0">
+                {label}:
+              </Col>
+              <Col xs={7}>{value}</Col>
+            </Row>
+          ))}
+        </Card.Body>
 
-        <div style={styles.infoGroup}>
-          <label style={styles.label}>Email:</label>
-          <span style={styles.value}>{customer.email}</span>
-        </div>
-
-        <div style={styles.infoGroup}>
-          <label style={styles.label}>Địa chỉ:</label>
-          <span style={styles.value}>{customer.address || 'N/A'}</span>
-        </div>
-
-        <div style={styles.infoGroup}>
-          <label style={styles.label}>Điện thoại:</label>
-          <span style={styles.value}>{customer.mobileNo || 'N/A'}</span>
-        </div>
-
-        <div style={styles.infoGroup}>
-          <label style={styles.label}>Doanh thu (VND):</label>
-          <span style={styles.value}>
-            {customer.revenue ? Number(customer.revenue).toLocaleString('vi-VN') : 0} VNĐ
-          </span>
-        </div>
-
-        <div style={styles.actions}>
-          <Link to={`/customers/edit/${id}`} style={styles.editBtn}>
+        <Card.Footer className="bg-white text-end">
+          <Button as={Link} to={`/customers/edit/${id}`} variant="warning" className="fw-bold">
             Chỉnh sửa
-          </Link>
-        </div>
-      </div>
-    </div>
+          </Button>
+        </Card.Footer>
+      </Card>
+    </Container>
   );
 }
-
-const styles = {
-  container: { padding: '2rem', display: 'flex', justifyContent: 'center' },
-  card: { width: '100%', maxWidth: '550px', border: '1px solid #ccc', borderRadius: '8px', padding: '1.5rem', backgroundColor: '#fff' },
-  header: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' },
-  backBtn: { padding: '0.4rem 0.8rem', backgroundColor: '#6c757d', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' },
-  infoGroup: { display: 'flex', marginBottom: '1rem', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' },
-  label: { width: '150px', fontWeight: 'bold', color: '#555' },
-  value: { flex: 1, color: '#333' },
-  actions: { marginTop: '1.5rem', display: 'flex', justifyContent: 'flex-end' },
-  editBtn: { padding: '0.6rem 1.2rem', backgroundColor: '#ffc107', color: '#000', textDecoration: 'none', borderRadius: '4px', fontWeight: 'bold' },
-};
