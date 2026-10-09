@@ -1,12 +1,19 @@
-import { Form } from 'react-router';
+import { useNavigate } from 'react-router';
 import { Button } from 'react-bootstrap';
+import { useAuth } from '../context/AuthContext';
 
 export function LogoutButton() {
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
   return (
-    <Form method="post" action="/logout">
-      <Button type="submit" variant="outline-danger" size="sm">
-        Đăng xuất
-      </Button>
-    </Form>
+    <Button variant="outline-danger" size="sm" onClick={handleLogout}>
+      Đăng xuất
+    </Button>
   );
 }

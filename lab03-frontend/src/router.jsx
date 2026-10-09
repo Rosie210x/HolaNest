@@ -35,11 +35,13 @@ export const router = createBrowserRouter([
                             password: password ? password.trim() : '',
                         });
 
-                        if (res?.token) {
-                            localStorage.setItem('token', res.token);
+                        // Action chạy ngoài cây React nên không gọi được useContext;
+                        // trả token về để SignInPage lưu vào AuthContext.
+                        if (!res?.token) {
+                            return { error: 'Không nhận được token từ máy chủ' };
                         }
 
-                        return redirect('/');
+                        return { token: res.token, email: email.trim() };
                     } catch (err) {
                         return {
                             error: err.message || 'Email hoặc mật khẩu không chính xác',
@@ -82,13 +84,6 @@ export const router = createBrowserRouter([
             {
                 path: 'customers/:id',
                 element: <CustomerDetailPage />,
-            },
-            {
-                path: 'logout',
-                action: () => {
-                    localStorage.removeItem('token');
-                    return redirect('/login');
-                },
             },
             {
                 path: '*',

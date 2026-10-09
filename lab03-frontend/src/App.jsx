@@ -1,25 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import React from 'react';
+import { Outlet } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import { useAuth } from './context/AuthContext';
 
 export default function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState(null);
-  const navigate = useNavigate();
-
-  const location = useLocation();
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-
-    if (token) {
-      setIsAuthenticated(true);
-      setUser({ email: 'Admin' }); 
-    } else {
-      setIsAuthenticated(false);
-      setUser(null);
-    }
-  }, [location.pathname]);
+  const { user, isAuthenticated } = useAuth();
 
   return (
     <div className="d-flex flex-column min-vh-100">

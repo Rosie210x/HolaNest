@@ -7,11 +7,17 @@ const axiosClient = axios.create({
   },
 });
 
+// Token do AuthContext cung cấp (giữ trong bộ nhớ, không dùng localStorage)
+let accessToken = null;
+
+export const setAccessToken = (token) => {
+  accessToken = token;
+};
+
 axiosClient.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
     }
     return config;
   },

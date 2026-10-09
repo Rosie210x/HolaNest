@@ -1,10 +1,20 @@
-import React, { useState } from 'react';
-import { Form, useActionData, useNavigation, Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Form, useActionData, useNavigation, useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 export default function SignInPage() {
   const actionData = useActionData();
   const navigation = useNavigation();
+  const navigate = useNavigate();
+  const { login } = useAuth();
   const isSubmitting = navigation.state === 'submitting';
+
+  useEffect(() => {
+    if (actionData?.token) {
+      login(actionData.token, { email: actionData.email });
+      navigate('/', { replace: true });
+    }
+  }, [actionData, login, navigate]);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
