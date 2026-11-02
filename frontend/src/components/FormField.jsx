@@ -2,7 +2,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 
-// Visible label, error under the field linked with aria-describedby (docs/ui-blueprint.md §6.1)
 export default function FormField({ id, label, error, className, ...inputProps }) {
   const errorId = `${id}-error`;
 

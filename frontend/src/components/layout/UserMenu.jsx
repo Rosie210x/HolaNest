@@ -24,8 +24,8 @@ export default function UserMenu({ user }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="rounded-full" aria-label={`Tài khoản của ${user.fullName}`}>
-          <Avatar className="size-9">
+        <Button variant="ghost-inverse" size="icon" className="rounded-full" aria-label={`Tài khoản của ${user.fullName}`}>
+          <Avatar className="size-9 ring-2 ring-highlight">
             {user.avatarUrl && <AvatarImage src={user.avatarUrl} alt="" />}
             <AvatarFallback className="bg-accent text-sm font-semibold text-accent-foreground uppercase">
               {initials(user.fullName)}

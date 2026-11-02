@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ShieldAlert } from 'lucide-react';
+import TrustNote from '@/components/kit/TrustNote';
 import Logo from './Logo';
 import ThemeToggle from './ThemeToggle';
 
@@ -29,10 +29,7 @@ export default function SiteFooter() {
           <Logo className="self-start" />
           <p className="text-body-sm text-muted-foreground">Tìm trọ quanh Hòa Lạc: giá thật, phòng còn trống thật.</p>
           {/* §5.4 anti-deposit warning */}
-          <p className="flex items-start gap-2 text-body-sm text-foreground">
-            <ShieldAlert className="mt-0.5 size-5 shrink-0 text-warning" strokeWidth={1.75} aria-hidden="true" />
-            HolaNest không thu tiền cọc. Đừng chuyển khoản cho ai trước khi xem phòng.
-          </p>
+          <TrustNote />
         </div>
 
         {FOOTER_LINKS.map((group) => (

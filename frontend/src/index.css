@@ -11,41 +11,53 @@
 /* Design tokens: docs/ui-blueprint.md §2. Dark mode is a token swap under .dark */
 :root {
     --background: #ffffff;
-    --foreground: #0f172a;
-    --surface: #f8fafc;
+    --foreground: #1a1a1a;
+    --surface: #f5f5f5;
     --card: #ffffff;
-    --card-foreground: #0f172a;
+    --card-foreground: #1a1a1a;
     --popover: #ffffff;
-    --popover-foreground: #0f172a;
-    --primary: #0f766e;
-    --primary-foreground: #ffffff;
-    --secondary: #f1f5f9;
-    --secondary-foreground: #0f172a;
-    --muted: #f1f5f9;
-    --muted-foreground: #475569;
-    --accent: #f0fdfa;
-    --accent-foreground: #115e59;
-    --destructive: #b91c1c;
-    --border: #e2e8f0;
-    /* Inputs need 3:1 non-text contrast, so they use a darker border than cards */
-    --input: #94a3b8;
-    --ring: #0f766e;
+    --popover-foreground: #1a1a1a;
 
-    --available: #15803d;
-    --available-bg: #f0fdf4;
-    --unavailable: #475569;
-    --unavailable-bg: #f1f5f9;
-    --verified: #1d4ed8;
+    /* Brand band (header, hero, score box) is navy; actions are a brighter blue so they stand out on white */
+    --brand: #003b95;
+    --brand-foreground: #ffffff;
+    --brand-muted: #c2d9ff;
+    --primary: #006ce4;
+    --primary-hover: #0057b8;
+    --primary-foreground: #ffffff;
+    /* Yellow frames the search box and marks promotions; text on it is always foreground, never white */
+    --highlight: #ffb700;
+    --highlight-foreground: #1a1a1a;
+
+    --secondary: #ebf3ff;
+    --secondary-foreground: #0057b8;
+    --muted: #f5f5f5;
+    --muted-foreground: #595959;
+    --accent: #ebf3ff;
+    --accent-foreground: #003b95;
+    --destructive: #d4111e;
+    --border: #e7e7e7;
+    /* Inputs need 3:1 non-text contrast, so they use a darker border than cards */
+    --input: #868686;
+    --ring: #006ce4;
+
+    --available: #008234;
+    --available-bg: #e7fde9;
+    --unavailable: #595959;
+    --unavailable-bg: #f0f0f0;
+    --verified: #00796b;
     --warning: #92400e;
-    --warning-bg: #fffbeb;
-    --best: #115e59;
-    --best-bg: #f0fdfa;
+    --warning-bg: #fff8e5;
+    --best: #003b95;
+    --best-bg: #ebf3ff;
+    --score: #003b95;
+    --score-foreground: #ffffff;
     --ai: #6d28d9;
 
-    --chart-1: #0f766e;
-    --chart-2: #1d4ed8;
-    --chart-3: #15803d;
-    --chart-4: #92400e;
+    --chart-1: #006ce4;
+    --chart-2: #003b95;
+    --chart-3: #008234;
+    --chart-4: #ffb700;
     --chart-5: #6d28d9;
 
     --radius: 0.5rem;
@@ -54,36 +66,52 @@
 }
 
 .dark {
-    --background: #0b1220;
-    --foreground: #e2e8f0;
-    --surface: #111827;
-    --card: #111827;
-    --card-foreground: #e2e8f0;
-    --popover: #111827;
-    --popover-foreground: #e2e8f0;
-    --primary: #2dd4bf;
-    --primary-foreground: #042f2e;
-    --secondary: #1e293b;
-    --secondary-foreground: #e2e8f0;
-    --muted: #1e293b;
-    --muted-foreground: #94a3b8;
-    --accent: #042f2e;
-    --accent-foreground: #5eead4;
-    --destructive: #f87171;
-    --border: #1f2937;
-    --input: #475569;
-    --ring: #2dd4bf;
+    --background: #0b1424;
+    --foreground: #e8eaed;
+    --surface: #111c30;
+    --card: #13203a;
+    --card-foreground: #e8eaed;
+    --popover: #13203a;
+    --popover-foreground: #e8eaed;
+
+    --brand: #0d2a5c;
+    --brand-foreground: #ffffff;
+    --brand-muted: #c2d9ff;
+    --primary: #57a6ff;
+    --primary-hover: #7db9ff;
+    --primary-foreground: #00224f;
+    --highlight: #ffb700;
+    --highlight-foreground: #1a1a1a;
+
+    --secondary: #172a4a;
+    --secondary-foreground: #9cc8ff;
+    --muted: #172a4a;
+    --muted-foreground: #a3acb9;
+    --accent: #172a4a;
+    --accent-foreground: #9cc8ff;
+    --destructive: #ff6b6b;
+    --border: #253250;
+    --input: #5b6b85;
+    --ring: #57a6ff;
 
     --available: #4ade80;
-    --available-bg: #052e16;
+    --available-bg: #0b2e1a;
     --unavailable: #cbd5e1;
     --unavailable-bg: #1e293b;
-    --verified: #60a5fa;
+    --verified: #4dd0be;
     --warning: #fcd34d;
-    --warning-bg: #422006;
-    --best: #5eead4;
-    --best-bg: #042f2e;
+    --warning-bg: #3a2a06;
+    --best: #9cc8ff;
+    --best-bg: #172a4a;
+    --score: #1e5bc6;
+    --score-foreground: #ffffff;
     --ai: #a78bfa;
+
+    --chart-1: #57a6ff;
+    --chart-2: #9cc8ff;
+    --chart-3: #4ade80;
+    --chart-4: #ffb700;
+    --chart-5: #a78bfa;
 }
 
 @theme inline {
@@ -97,8 +125,14 @@
     --color-card-foreground: var(--card-foreground);
     --color-popover: var(--popover);
     --color-popover-foreground: var(--popover-foreground);
+    --color-brand: var(--brand);
+    --color-brand-foreground: var(--brand-foreground);
+    --color-brand-muted: var(--brand-muted);
     --color-primary: var(--primary);
+    --color-primary-hover: var(--primary-hover);
     --color-primary-foreground: var(--primary-foreground);
+    --color-highlight: var(--highlight);
+    --color-highlight-foreground: var(--highlight-foreground);
     --color-secondary: var(--secondary);
     --color-secondary-foreground: var(--secondary-foreground);
     --color-muted: var(--muted);
@@ -119,6 +153,8 @@
     --color-warning-bg: var(--warning-bg);
     --color-best: var(--best);
     --color-best-bg: var(--best-bg);
+    --color-score: var(--score);
+    --color-score-foreground: var(--score-foreground);
     --color-ai: var(--ai);
 
     --color-chart-1: var(--chart-1);
@@ -127,17 +163,32 @@
     --color-chart-4: var(--chart-4);
     --color-chart-5: var(--chart-5);
 
-    /* §2.4: sm chips/badges · md inputs/buttons · lg cards · xl dialogs/sheets */
-    --radius-sm: 6px;
-    --radius-md: 8px;
-    --radius-lg: 12px;
-    --radius-xl: 16px;
-    --radius-2xl: 20px;
-    --radius-3xl: 24px;
-    --radius-4xl: 28px;
+    /* §2.4: sm buttons/badges · md inputs · lg cards · xl tiles/offer cards · 2xl sheets/dialogs */
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 8px;
+    --radius-xl: 12px;
+    --radius-2xl: 16px;
+    --radius-3xl: 20px;
+    --radius-4xl: 24px;
+
+    /* §2.4 elevation: one neutral shadow family, stronger only when the surface floats */
+    --shadow-sm: 0 1px 4px 0 rgb(26 26 26 / 0.12);
+    --shadow-md: 0 2px 8px 0 rgb(26 26 26 / 0.16);
+    --shadow-lg: 0 4px 16px 0 rgb(26 26 26 / 0.24);
 }
 
 /* §2.3 type scale; sizes step up at ≥768 px */
+@utility text-hero {
+    font-size: 2rem;
+    line-height: 2.5rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    @media (width >= 48rem) {
+        font-size: 3rem;
+        line-height: 3.75rem;
+    }
+}
 @utility text-display {
     font-size: 1.5rem;
     line-height: 2rem;
@@ -169,6 +220,14 @@
     font-size: 1rem;
     line-height: 1.5rem;
     font-weight: 600;
+}
+@utility text-lead {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    @media (width >= 48rem) {
+        font-size: 1.375rem;
+        line-height: 2rem;
+    }
 }
 @utility text-body-sm {
     font-size: 0.875rem;
@@ -203,6 +262,23 @@
     }
 }
 
+/* Rows that scroll sideways on purpose (§3.1): snap points and a fade on the trailing edge */
+@utility scroll-row {
+    display: flex;
+    min-width: 0;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    mask-image: linear-gradient(to right, black calc(100% - 2rem), transparent);
+    & > * {
+        scroll-snap-align: start;
+        flex-shrink: 0;
+    }
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
 @layer base {
     * {
         @apply border-border outline-ring/50;
@@ -217,10 +293,14 @@
     [role="button"]:not(:disabled) {
         cursor: pointer;
     }
-    /* §6.1: visible 2 px primary ring with 2 px offset */
+    /* §6.1: visible 2 px ring with 2 px offset */
     :focus-visible {
         outline: 2px solid var(--ring);
         outline-offset: 2px;
+    }
+    /* On the navy band the blue ring disappears, so it turns yellow there */
+    .bg-brand :focus-visible {
+        outline-color: var(--highlight);
     }
     @media (prefers-reduced-motion: reduce) {
         *,

@@ -10,6 +10,7 @@ import AccessCheckPage from './pages/AccessCheckPage';
 import ForbiddenPage from './pages/ForbiddenPage';
 import NotFoundPage from './pages/NotFoundPage';
 import ErrorPage from './pages/ErrorPage';
+import UiKitPage from './pages/UiKitPage';
 import { authApi } from './api/authApi';
 import { loadCurrentUser, safeNextPath } from './auth/session';
 
@@ -155,6 +156,11 @@ export const router = createBrowserRouter([
         path: 'admin',
         element: <AccessCheckPage title="Quản trị" check={authApi.checkAdmin} />,
         loader: requireRole('ADMIN'),
+      },
+      {
+        // Design system reference (docs/ui-blueprint.md §2, §6.4)
+        path: 'ui-kit',
+        element: <UiKitPage />,
       },
       {
         path: 'forbidden',

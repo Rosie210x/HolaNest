@@ -41,28 +41,39 @@ Personas are working hypotheses built from SRS §1.1–1.2; validate them in the
 
 ## 2. Design system & tokens
 
-The system is a shadcn/ui theme on Tailwind CSS: deep teal as the brand, and three separate hues so “brand”, “available” and “verified” never mean the same colour. All tokens are CSS variables on `:root` with a `.dark` override, so dark mode is a token swap, not a redesign.
+The visual language borrows Booking.com’s booking-marketplace conventions (navy brand band, bright-blue actions, yellow-framed search, score box, dense bordered cards; see §2.5), adapted to the rules in §1.3. It is a shadcn/ui theme on Tailwind CSS v4. Brand, “available” and “verified” still use three separate hues so they never mean the same thing. All tokens are CSS variables on `:root` in `frontend/src/index.css`, with a `.dark` override, so dark mode is a token swap, not a redesign. The live reference is the **`/ui-kit`** route (`frontend/src/pages/UiKitPage.jsx`), which renders every token and component below.
 
 ### 2.1 Colour tokens
 
-Contrast ratios are against the background each token is used on (white unless noted); all text pairs meet WCAG AA 4.5:1.
+Contrast ratios are measured against the background each token is used on (white unless noted). Every text pair meets WCAG AA 4.5:1, and borders meet 3:1.
 
 | Token | Light | Dark | Use | Contrast (light) |
 | --- | --- | --- | --- | --- |
-| `--primary` | #0F766E (teal-700) | #2DD4BF (teal-400) | Primary buttons, links, active tab, focus ring | 5.5:1 |
-| `--primary-foreground` | #FFFFFF | #042F2E | Text on primary | 5.5:1 |
-| `--background` | #FFFFFF | #0B1220 | Page | — |
-| `--surface` | #F8FAFC (slate-50) | #111827 | Section bands, cost table header, sidebar | — |
-| `--foreground` | #0F172A (slate-900) | #E2E8F0 | Body text, prices | 17.9:1 |
-| `--muted-foreground` | #475569 (slate-600) | #94A3B8 | Meta: views, dates, “đường chim bay” | 7.6:1 |
-| `--border` | #E2E8F0 (slate-200) | #1F2937 | Card and input borders (inputs use slate-400 #94A3B8 for 3:1 non-text contrast) | — |
-| `--available` / `-bg` | #15803D on #F0FDF4 | #4ADE80 on #052E16 | “Còn N phòng” badge | 4.8:1 |
-| `--unavailable` / `-bg` | #475569 on #F1F5F9 | #CBD5E1 on #1E293B | “Hết phòng” — neutral, not red: it is a state, not an error | 6.9:1 |
-| `--verified` | #1D4ED8 (blue-700) | #60A5FA | “Đã xác minh” landlord badge, “Đã đi xem phòng” review badge | 6.7:1 |
-| `--warning` / `-bg` | #92400E on #FFFBEB | #FCD34D on #422006 | Chờ duyệt, sắp hết hạn, SLA > 24 h | 7.0:1 |
-| `--destructive` | #B91C1C (red-700) | #F87171 | Errors, Từ chối, Khóa, Xóa | 6.5:1 |
-| `--best` / `-bg` | #115E59 on #F0FDFA | #5EEAD4 on #042F2E | Best value per row in SC11, always with a “Tốt nhất” chip | 7.4:1 |
-| `--ai` | #6D28D9 (violet-700) | #A78BFA | AI assistant icon, panel accent only (never for data) | 7.1:1 |
+| `--brand` / `-foreground` | #003B95 / #FFFFFF | #0D2A5C / #FFFFFF | Header band, hero, landlord CTA banner, nav pills | 10.2:1 |
+| `--brand-muted` | #C2D9FF on brand | same | Secondary text on the brand band (hero subtitle) | 7.1:1 |
+| `--primary` | #006CE4 | #57A6FF | Primary buttons, links, listing titles, checked controls, focus ring | 4.9:1 |
+| `--primary-hover` | #0057B8 | #7DB9FF | Hover/pressed primary | 6.9:1 |
+| `--primary-foreground` | #FFFFFF | #00224F | Text on primary | 4.9:1 |
+| `--highlight` / `-foreground` | #FFB700 / #1A1A1A | same | Search-box frame, avatar ring, focus ring on the brand band, logo mark. Never as text on white | 10.0:1 |
+| `--accent` / `-foreground` | #EBF3FF / #003B95 | #172A4A / #9CC8FF | Selected chip, estimate tile, icon bubbles | 9.1:1 |
+| `--secondary` / `-foreground` | #EBF3FF / #0057B8 | #172A4A / #9CC8FF | Secondary filled button (Lưu nháp) | 6.2:1 |
+| `--background` | #FFFFFF | #0B1424 | Page, cards | — |
+| `--surface` | #F5F5F5 | #111C30 | Section bands, rent tile, footer | — |
+| `--foreground` | #1A1A1A | #E8EAED | Body text, prices | 17.4:1 |
+| `--muted-foreground` | #595959 | #A3ACB9 | Meta: views, dates, “đường chim bay” | 7.0:1 (6.4 on surface) |
+| `--border` | #E7E7E7 | #253250 | Card borders, dividers | — |
+| `--input` | #868686 | #5B6B85 | Input, chip, stepper borders | 3.6:1 |
+| `--available` / `-bg` | #008234 on #E7FDE9 | #4ADE80 on #0B2E1A | “Còn N phòng”, Đang hiển thị, Đã xem | 4.6:1 |
+| `--unavailable` / `-bg` | #595959 on #F0F0F0 | #CBD5E1 on #1E293B | “Hết phòng”: neutral, not red, because it is a state, not an error | 6.2:1 |
+| `--verified` | #00796B | #4DD0BE | “Đã xác minh”, “Đã đi xem phòng”, Đã xác nhận | 5.3:1 |
+| `--warning` / `-bg` | #92400E on #FFF8E5 | #FCD34D on #3A2A06 | Chờ duyệt, sắp hết hạn, SLA > 24 h, anti-deposit icon | 6.7:1 |
+| `--destructive` | #D4111E | #FF6B6B | Errors, Từ chối, Khóa, Xóa, saved heart | 5.4:1 |
+| `--best` / `-bg` | #003B95 on #EBF3FF | #9CC8FF on #172A4A | Best value per row in SC11, always with a “Tốt nhất” chip | 9.1:1 |
+| `--score` / `-foreground` | #003B95 / #FFFFFF | #1E5BC6 / #FFFFFF | Rating score box | 10.2:1 |
+| `--ai` | #6D28D9 | #A78BFA | AI assistant icon, panel accent only (never for data) | 7.1:1 |
+| `--chart-1…5` | #006CE4 · #003B95 · #008234 · #FFB700 · #6D28D9 | lighter equivalents | Admin charts (SC21) | — |
+
+**Why teal for “verified”:** Booking.com uses blue for both brand and trust marks. Hola Nest’s brand is blue as well, so “verified” moves to teal to keep §1.3’s rule that brand, available and verified are three hues. The icon (badge-check / footprints) and label always carry the meaning too.
 
 ### 2.2 Status → token mapping
 
@@ -85,42 +96,66 @@ One badge component (`StatusBadge`) renders every status: dot + text label, neve
 
 ### 2.3 Typography
 
-Font: **Be Vietnam Pro** (Google Fonts, designed for Vietnamese stacked diacritics), weights 400/500/600/700, fallback `"Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif`. Prices use `font-variant-numeric: tabular-nums` so columns align in the compare table.
+Font: **Be Vietnam Pro** (self-hosted via `@fontsource`, designed for Vietnamese stacked diacritics), weights 400/500/600/700, fallback `"Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif`. Booking.com uses a system stack; Be Vietnam Pro stays because it renders “Ở”, “Ắ”, “Ữ” cleanly at bold weights. Headings are bold and tight like Booking’s; prices use `font-variant-numeric: tabular-nums` so columns align in the compare table. Each token is a Tailwind `@utility` (`text-hero`, `text-display` …).
 
 | Token | Size / line height (mobile → ≥768) | Weight | Use |
 | --- | --- | --- | --- |
-| `display` | 24/32 → 30/38 | 700 | Page title (“Tìm trọ quanh Hòa Lạc”) |
-| `h1` | 22/30 → 28/36 | 700 | Listing title on SC02 |
-| `h2` | 18/26 → 20/28 | 600 | Section headings (Giá & chi phí, Tiện ích) |
+| `hero` | 32/40 → 48/60 | 700, −0.01em | Landing hero only (“Tìm trọ quanh Hòa Lạc”) |
+| `display` | 24/32 → 30/38 | 700 | Page and section titles (“Khu vực được tìm nhiều”) |
+| `h1` | 22/30 → 28/36 | 700 | Listing title on SC02, area tile names |
+| `h2` | 18/26 → 20/28 | 600 | Card-level section headings (Giá & chi phí, Tiện ích) |
 | `h3` | 16/24 | 600 | Card title, table group header |
+| `lead` | 18/28 → 22/32 | 400 | Hero subtitle, page intros |
 | `body` | 16/24 | 400 | Default text; never below 16 px in inputs (prevents iOS zoom) |
-| `body-sm` | 14/20 | 400 | Card meta, table cells |
-| `caption` | 12/16 | 500 | Timestamps, helper text; never for prices or status |
-| `price-lg` | 28/32 | 700 | Rent on SC02 / right rail |
+| `body-sm` | 14/20 | 400 | Card meta, table cells, chips |
+| `caption` | 12/16 | 500 | Timestamps, helper text, field labels inside the search box; never for prices or status |
+| `price-lg` | 28/32 | 700 | Estimate on SC02 / right rail |
 | `price-card` | 20/28 | 700 | Rent on cards (“2,5 triệu/tháng”) |
 
-Rules: heading line height stays ≥ 1.25 so “Ở”, “Ắ” do not clip; titles clamp at 2 lines; money uses `Intl.NumberFormat('vi-VN')` → “2.500.000 đ”, shortened on cards to “2,5 triệu/tháng” (SRS §5.2).
+Rules: heading line height stays ≥ 1.25 so “Ở”, “Ắ” do not clip; titles clamp at 2 lines; money uses `Intl.NumberFormat('vi-VN')` → “2.500.000 đ”, shortened on cards to “2,5 triệu/tháng” (SRS §5.2). Helpers live in `frontend/src/lib/format.js` (`formatVnd`, `formatMillions`, `formatDistance`, `formatScore`, `formatFreshness`).
 
 ### 2.4 Spacing, radius, elevation, motion
 
-- **Spacing:** 4 px base; scale 4 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 48 · 64. Card padding 12 (mobile) / 16; section gap 24 / 32; page gutter 16 / 24.
-- **Radius:** `sm` 6 (chips, badges) · `md` 8 (inputs, buttons) · `lg` 12 (cards, cost card) · `xl` 16 (dialogs, bottom sheets, top corners only) · `full` (pills, avatars).
-- **Elevation:** `shadow-sm` card hover (desktop only) · `shadow-md` sticky action bar, compare tray, sticky table header · `shadow-lg` dialog, popover. Flat borders elsewhere.
-- **Z-index:** header 40 · sticky bars and compare tray 50 · sheet / dialog 60 · toast 70.
-- **Motion:** 150 ms ease-out for state changes (save heart, stepper), 250 ms for sheets; honour `prefers-reduced-motion` by disabling transforms. Skeleton shimmer 1.5 s.
-- **Icons:** lucide-react (shadcn default), 20 px inline, 24 px in navigation, stroke 1.75.
+- **Spacing:** 4 px base; scale 4 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 48 · 64. Card padding 12 (mobile) / 16; section gap 48 / 56 on the landing page, 24 / 32 inside app screens; page gutter 16 / 24.
+- **Radius (Booking-tight):** `sm` 4 (buttons, badges, photo-count chip) · `md` 6 (inputs, segments inside the search frame) · `lg` 8 (cards, cost card, search frame) · `xl` 12 (area tiles, CTA banner) · `2xl` 16 (dialogs, bottom sheets, top corners only) · `full` (chips, nav pills, avatars). The score box is `6 6 6 0` (open bottom-left corner).
+- **Elevation:** `shadow-sm` (0 1 4, 12 %) offer cards · `shadow-md` (0 2 8, 16 %) search frame, card hover (desktop only), sticky action bar, compare tray · `shadow-lg` (0 4 16, 24 %) popover, dialog. Flat 1 px borders everywhere else; Booking’s cards are bordered, not floating.
+- **Z-index:** header 40 · sticky bars and compare tray 50 · sheet / dialog / popover 60 · toast and skip link 70.
+- **Motion:** 150 ms ease-out for state changes (save heart, stepper), 250 ms for sheets; `prefers-reduced-motion` disables them globally. Skeleton shimmer 1.5 s.
+- **Icons:** lucide-react, 20 px inline, 24 px in navigation, stroke 1.75 (2 for the heart and badge-check).
+- **Focus:** 2 px `--ring` outline, 2 px offset; on the brand band it switches to `--highlight` because blue on navy is invisible.
+- **Sideways rows:** the `scroll-row` utility gives chip rows and mobile carousels snap points, a hidden scrollbar and a 32 px fade on the trailing edge (§3.1).
 
 ```css
 :root {
-  --primary: 174 77% 26%;      /* #0F766E */
-  --available: 142 72% 29%;    /* #15803D */
-  --verified: 224 76% 48%;     /* #1D4ED8 */
-  --warning: 26 83% 31%;       /* #92400E */
-  --destructive: 0 74% 42%;    /* #B91C1C */
-  --radius: 0.5rem;
+  --brand: #003b95;       --primary: #006ce4;  --highlight: #ffb700;
+  --available: #008234;   --verified: #00796b; --warning: #92400e;
+  --destructive: #d4111e; --score: #003b95;
 }
-.dark { --primary: 172 66% 50%; /* #2DD4BF */ }
+.dark { --brand: #0d2a5c; --primary: #57a6ff; /* … */ }
 ```
+
+### 2.5 Visual language: patterns taken from Booking.com
+
+Reference: the Booking.com home and search-results pages. These patterns are reused because renters already know them from travel booking. None of Booking’s branding, logo or copy is reused.
+
+| Booking.com pattern | Hola Nest adaptation | Where |
+| --- | --- | --- |
+| Navy header band that continues into the hero | `bg-brand` header (sticky, 56 px) plus a non-sticky row of nav pills on ≥ 768; the landing hero continues the same navy | `SiteHeader`, `Home` |
+| Product tabs as outlined pills in the header | Renter nav (Tìm phòng · Phòng đã lưu · Yêu cầu xem phòng) as pills; active = white 1 px outline + 10 % white fill | `SiteHeader` |
+| “Register / Sign in” as white buttons on navy | `inverse` button variant; `ghost-inverse` for “Cho thuê phòng” | `button.jsx` |
+| Search box framed in yellow, overlapping the hero edge | `SearchBar`: 4 px `--highlight` frame, segments separated by 4 px yellow gaps, each with a visible caption label, primary “Tìm phòng” button; stacked on mobile, one row from `lg` | `SearchBar` |
+| Score box + word + review count | `ScoreBadge`: navy box with the 0–5 score, word (Tuyệt hảo ≥ 4,5 · Rất tốt ≥ 4 · Tốt ≥ 3,5 · Khá ≥ 3), “12 đánh giá”; 0 reviews → “Chưa có đánh giá” | Cards, SC02, SC03 |
+| Blue bold property name as the card link | Listing title in `--primary`, whole card clickable through a stretched link | `ListingCard` |
+| Offer cards (text left, image right, one CTA) | “Trước khi đi xem phòng”: semester-start freshness + anti-deposit trust | `Home` |
+| Trending destinations (2 large + 3 small tiles) | “Khu vực được tìm nhiều”: xã tiles with vacancy count | `Home` |
+| Browse by property type carousel | “Tìm theo loại hình”: snap-scroll on mobile, 4-up grid on `lg` | `Home` |
+| Section title + “Xem tất cả” right-aligned | `SectionHeader` | Everywhere |
+| Dense bordered cards, small radii, 4 px buttons | Radius scale in §2.4 | All primitives |
+
+**Deliberately not copied:**
+- **Urgency and scarcity cues** (“Only 1 left!”, red countdowns, “12 people are looking”). They break §1.3 principle 2: availability is a fact shown in a neutral badge, and “Hết phòng” is grey, not red.
+- **Strike-through “deal” prices.** Hola Nest has no discounts, and showing them would undercut the cost-transparency promise.
+- **Placeholder-only search fields.** Each segment has a visible caption label (NFR13).
 
 ## 3. Global layout & responsive framework
 
@@ -142,7 +177,7 @@ Container: renter pages max-width 1200 px centred; landlord/admin content max-wi
 
 | Role | Mobile (< 768 px) | Desktop (≥ 1024 px) |
 | --- | --- | --- |
-| Guest / renter | Top bar 56 px: logo, search pill, avatar or “Đăng nhập”. Bottom tab bar 56 px + safe area: **Tìm phòng · Đã lưu · Yêu cầu · Tài khoản** (badge on Yêu cầu when a request changes status). Guests see the same tabs; tapping Đã lưu prompts login. | Top nav: Tìm phòng · Phòng đã lưu · Yêu cầu xem phòng, right side “Cho thuê phòng” (→ SC15) or “Kênh chủ trọ” (→ SC16), notification bell, account menu. |
+| Guest / renter | Top bar 56 px: logo, search pill, avatar or “Đăng nhập”. Bottom tab bar 56 px + safe area: **Tìm phòng · Đã lưu · Yêu cầu · Tài khoản** (badge on Yêu cầu when a request changes status). Guests see the same tabs; tapping Đã lưu prompts login. | Navy band (§2.5). Row 1, sticky 56 px: logo; on the right “Cho thuê phòng” (→ SC15) or “Kênh chủ trọ” (→ SC16), notification bell, account menu (guests: white “Đăng ký” · “Đăng nhập”). Row 2, scrolls away: nav pills Tìm phòng · Phòng đã lưu · Yêu cầu xem phòng. |
 | Landlord | Separate “Kênh chủ trọ” shell. Bottom tabs: **Tổng quan · Yêu cầu (badge) · Thống kê · Tài khoản**; floating “+ Thêm” button bottom-right, 56 px, above the tab bar. Link “Về trang tìm phòng” in Tài khoản. | Left sidebar (as in mockups): Tổng quan, Yêu cầu xem phòng (count), Thống kê tin đăng, Hồ sơ công khai, Tài khoản; footer shows name + “Chủ trọ đã xác minh”. |
 | Admin | Usable at 360 px (NFR01) but optimised for desktop: hamburger opens a sheet with the same sidebar. Tables reflow to stacked cards. | Left sidebar with live counters per queue: Dashboard, Hồ sơ chủ trọ, Kiểm duyệt tin, Đánh giá & báo cáo, Giới thiệu thành công, Tin đăng hộ, Người dùng, Danh mục. |
 
@@ -191,6 +226,22 @@ Each screen below lists its zones top to bottom with mobile and desktop behaviou
 “Hết phòng” cards stay in results (unless the switch is on) with the image at 60 % opacity and the badge neutral; they can still be saved and compared.
 
 States: 6 card skeletons on first load; on refetch, keep old results at 60 % opacity with a 2 px top progress bar (no layout jump); empty = MSG27 with one button per active filter (“Bỏ ‘Điều hòa’”); error = MSG29 + “Thử lại”.
+
+**Landing state (no query string)** — `frontend/src/pages/Home.jsx`. Without filters, SC01 opens as a browse page in the §2.5 visual language. As soon as the URL carries search params, the results zones above take over below the search bar.
+
+| # | Section | Content | Components |
+| --- | --- | --- | --- |
+| 1 | Hero (navy) | Greeting when signed in, `hero` title, `lead` subtitle stating the three promises | — |
+| 2 | Search | Yellow-framed `SearchBar` overlapping the hero by 40 px; “Khu vực quen gọi” chip links below it | `SearchBar`, `chipClass` |
+| 3 | Trước khi đi xem phòng | Two offer cards: semester-start freshness (→ `?truong=fpt&bk=3&con_phong=1`) and the anti-deposit note | `MediaPlaceholder`, `TrustNote` |
+| 4 | Khu vực được tìm nhiều | 2 large + 3 small xã tiles with vacancy counts (→ `?khu_vuc=`) | `MediaPlaceholder` |
+| 5 | Tìm theo trường | One tile per school with the room count within 3 km (→ `?truong=&bk=3&sx=gan_truong`) | — |
+| 6 | Tìm theo loại hình | Snap-scroll row on mobile, 4-up grid on `lg` | `scroll-row` |
+| 7 | Được xem nhiều tuần này | Listing cards; save asks guests to log in and returns them here, compare enforces the BR16 limit of 3 with a toast | `ListingCard`, `SectionHeader` |
+| 8 | Vì sao thuê trọ qua HolaNest | Three value props on `surface`: total cost, freshness, verification | — |
+| 9 | Landlord CTA | Navy banner, `inverse` button → SC15 (or SC16 for landlords) | `Button` |
+
+Sample data lives in `frontend/src/data/sampleContent.js` until the listing API exists.
 
 ### 4.2 SC02 — Chi tiết phòng
 
@@ -369,20 +420,39 @@ Ship to WCAG 2.2 AA (NFR13 asks for AA contrast; the rest is the cheap way to ge
 
 ### 6.4 Component inventory
 
-| Hola Nest component | Built from (shadcn/ui) | Used on |
-| --- | --- | --- |
-| `ListingCard` | `Card`, `AspectRatio`, `Badge`, `Checkbox` | SC01, SC03, SC10 |
-| `FilterPanel` | `Sheet`, `Accordion`, `Slider`, `Checkbox`, `Switch`, `ToggleGroup` | SC01 |
-| `CompareTray` | `Button`, `Avatar`, `Tooltip` | SC01, SC02, SC10 |
-| `CompareMatrix` | `Table`, `Switch`, `Select` | SC11 |
-| `AiAssistantPanel` | `Drawer` / `Sheet`, `ScrollArea`, `Textarea`, `Badge` | SC11 |
-| `CostBreakdown` | `Card`, `Table`, `Tooltip` | SC02, SC18 |
-| `StickyActionBar` | `Button` | SC02 |
-| `VerifiedBadge`, `StatusBadge` | `Badge`, `Tooltip` | Everywhere |
-| `VacancyStepper` | `Button` × 2, `Input` | SC16 |
-| `RequestTimeline` | custom on `Card` | SC05, SC12, SC19 |
-| `QueueTile` | `Card` | SC21 |
-| `ConfirmWithReason` | `AlertDialog`, `Textarea` | SC19, SC22–SC26 |
+Domain components live in `frontend/src/components/kit/`; shadcn primitives in `frontend/src/components/ui/` stay as generated, except for the theme edits listed below. **Built** components are rendered on `/ui-kit`.
+
+**Primitive overrides (shadcn):** `Button` has 4 px radius and semibold text, with variants `default` · `outline` (blue border, Booking secondary) · `secondary` · `neutral` (grey border, for Hủy) · `ghost` · `link` · `destructive` · `inverse` · `ghost-inverse`, and `lg` = 56 px for the search CTA. `Card` has an 8 px radius with a 1 px border instead of a ring. `Badge` has a 4 px radius. `Popover` was added to explain badges and cost hints.
+
+| Hola Nest component | Status | Built from | API (main props) | Used on |
+| --- | --- | --- | --- | --- |
+| `SearchBar` | Built | `Button`, native `select` | reads/writes `q`, `truong`, `bk` in the URL; radius disabled until a school is set | SC01 landing |
+| `ListingCard` | Built | `Checkbox`, `AvailabilityBadge`, `PriceSummary`, `ScoreBadge`, `VerifiedBadge`, `MediaPlaceholder` | `listing`, `saved`/`onSaveChange`, `compared`/`onCompareChange` | SC01, SC03, SC10 |
+| `PriceSummary` | Built | — | `rent`, `estimate`, `size: card \| lg` | Cards, SC02, SC18 |
+| `CostBreakdown` | Built | `PriceSummary`, `Popover`, `<table>` | `rent`, `estimate`, `deposit`, `items[{label, amount \| text, unit, note, hint}]`, `waterPerM3`, `updatedAt` | SC02, SC18 |
+| `ScoreBadge` | Built | — | `score`, `count`, `size: md \| sm` | Cards, SC02, SC03 |
+| `AvailabilityBadge` | Built | — | `vacant`, `total` | Cards, SC02 |
+| `StatusBadge` | Built | — | `entity: listing \| request \| landlord`, `status`, `hiddenBy` (§2.2) | SC12, SC16, SC19, admin |
+| `VerifiedBadge` | Built | `Popover` | `kind: landlord \| visit`, `iconOnly` | Everywhere |
+| `VacancyStepper` | Built | `Button` × 2, `output` | `value`, `total`, `onChange`, `disabled` | SC16 |
+| `FilterChip` / `chipClass` | Built | — | `selected`/`onClick` (toggle) or `onRemove` | SC01 filters, landing area links |
+| `SectionHeader` | Built | — | `title`, `description`, `actionLabel`, `actionTo` | Landing, lists |
+| `TrustNote` | Built | — | — (static anti-deposit copy) | Footer, landing, SC02 rail, SC04 |
+| `MediaPlaceholder` | Built (temporary) | — | `tone`, `icon` | Until real photos exist |
+| `EmptyState`, `FormField` | Built | `Input`, `Label` | — | Everywhere |
+| `FilterPanel` | To build | `Sheet`, `Accordion`, `Slider`, `Checkbox`, `Switch`, `ToggleGroup` | — | SC01 |
+| `CompareTray` | To build | `Button`, `Avatar`, `Tooltip` | — | SC01, SC02, SC10 |
+| `CompareMatrix` | To build | `Table`, `Switch`, `Select` | — | SC11 |
+| `AiAssistantPanel` | To build | `Drawer` / `Sheet`, `ScrollArea`, `Textarea`, `Badge` | — | SC11 |
+| `StickyActionBar` | To build | `Button`, `TrustNote` | — | SC02 |
+| `RequestTimeline` | To build | custom on `Card` | — | SC05, SC12, SC19 |
+| `QueueTile` | To build | `Card` | — | SC21 |
+| `ConfirmWithReason` | To build | `AlertDialog`, `Textarea` | — | SC19, SC22–SC26 |
+
+**Kit conventions:**
+- Every interactive kit element reaches a 48 px hit area, through padding or an `after:` pseudo-element when the visual must stay small (chips 40 px, badges 24 px).
+- Colour classes come only from tokens. `MediaPlaceholder` gradients are the one exception: they are illustration, not meaning.
+- Non-component exports (`chipClass`, `SCHOOLS`) live in plain modules (`kit/styles.js`, `lib/schools.js`) so React Fast Refresh keeps working.
 
 ### 6.5 SRS gaps that affect the UI (resolve before sprint 1 design freeze)
 
