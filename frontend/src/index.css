@@ -1,0 +1,235 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource/be-vietnam-pro/400.css";
+@import "@fontsource/be-vietnam-pro/500.css";
+@import "@fontsource/be-vietnam-pro/600.css";
+@import "@fontsource/be-vietnam-pro/700.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* Design tokens: docs/ui-blueprint.md §2. Dark mode is a token swap under .dark */
+:root {
+    --background: #ffffff;
+    --foreground: #0f172a;
+    --surface: #f8fafc;
+    --card: #ffffff;
+    --card-foreground: #0f172a;
+    --popover: #ffffff;
+    --popover-foreground: #0f172a;
+    --primary: #0f766e;
+    --primary-foreground: #ffffff;
+    --secondary: #f1f5f9;
+    --secondary-foreground: #0f172a;
+    --muted: #f1f5f9;
+    --muted-foreground: #475569;
+    --accent: #f0fdfa;
+    --accent-foreground: #115e59;
+    --destructive: #b91c1c;
+    --border: #e2e8f0;
+    /* Inputs need 3:1 non-text contrast, so they use a darker border than cards */
+    --input: #94a3b8;
+    --ring: #0f766e;
+
+    --available: #15803d;
+    --available-bg: #f0fdf4;
+    --unavailable: #475569;
+    --unavailable-bg: #f1f5f9;
+    --verified: #1d4ed8;
+    --warning: #92400e;
+    --warning-bg: #fffbeb;
+    --best: #115e59;
+    --best-bg: #f0fdfa;
+    --ai: #6d28d9;
+
+    --chart-1: #0f766e;
+    --chart-2: #1d4ed8;
+    --chart-3: #15803d;
+    --chart-4: #92400e;
+    --chart-5: #6d28d9;
+
+    --radius: 0.5rem;
+    --header-height: 3.5rem;
+    --tabbar-height: 3.5rem;
+}
+
+.dark {
+    --background: #0b1220;
+    --foreground: #e2e8f0;
+    --surface: #111827;
+    --card: #111827;
+    --card-foreground: #e2e8f0;
+    --popover: #111827;
+    --popover-foreground: #e2e8f0;
+    --primary: #2dd4bf;
+    --primary-foreground: #042f2e;
+    --secondary: #1e293b;
+    --secondary-foreground: #e2e8f0;
+    --muted: #1e293b;
+    --muted-foreground: #94a3b8;
+    --accent: #042f2e;
+    --accent-foreground: #5eead4;
+    --destructive: #f87171;
+    --border: #1f2937;
+    --input: #475569;
+    --ring: #2dd4bf;
+
+    --available: #4ade80;
+    --available-bg: #052e16;
+    --unavailable: #cbd5e1;
+    --unavailable-bg: #1e293b;
+    --verified: #60a5fa;
+    --warning: #fcd34d;
+    --warning-bg: #422006;
+    --best: #5eead4;
+    --best-bg: #042f2e;
+    --ai: #a78bfa;
+}
+
+@theme inline {
+    --font-sans: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-heading: var(--font-sans);
+
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-surface: var(--surface);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-destructive: var(--destructive);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+
+    --color-available: var(--available);
+    --color-available-bg: var(--available-bg);
+    --color-unavailable: var(--unavailable);
+    --color-unavailable-bg: var(--unavailable-bg);
+    --color-verified: var(--verified);
+    --color-warning: var(--warning);
+    --color-warning-bg: var(--warning-bg);
+    --color-best: var(--best);
+    --color-best-bg: var(--best-bg);
+    --color-ai: var(--ai);
+
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+
+    /* §2.4: sm chips/badges · md inputs/buttons · lg cards · xl dialogs/sheets */
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-2xl: 20px;
+    --radius-3xl: 24px;
+    --radius-4xl: 28px;
+}
+
+/* §2.3 type scale; sizes step up at ≥768 px */
+@utility text-display {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    font-weight: 700;
+    @media (width >= 48rem) {
+        font-size: 1.875rem;
+        line-height: 2.375rem;
+    }
+}
+@utility text-h1 {
+    font-size: 1.375rem;
+    line-height: 1.875rem;
+    font-weight: 700;
+    @media (width >= 48rem) {
+        font-size: 1.75rem;
+        line-height: 2.25rem;
+    }
+}
+@utility text-h2 {
+    font-size: 1.125rem;
+    line-height: 1.625rem;
+    font-weight: 600;
+    @media (width >= 48rem) {
+        font-size: 1.25rem;
+        line-height: 1.75rem;
+    }
+}
+@utility text-h3 {
+    font-size: 1rem;
+    line-height: 1.5rem;
+    font-weight: 600;
+}
+@utility text-body-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+}
+@utility text-caption {
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-weight: 500;
+}
+@utility text-price-lg {
+    font-size: 1.75rem;
+    line-height: 2rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+@utility text-price-card {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Page container: renter pages max 1200 px, gutter 16 / 24 (§3.1) */
+@utility page-container {
+    margin-inline: auto;
+    width: 100%;
+    max-width: 1200px;
+    padding-inline: 1rem;
+    @media (width >= 40rem) {
+        padding-inline: 1.5rem;
+    }
+}
+
+@layer base {
+    * {
+        @apply border-border outline-ring/50;
+    }
+    html {
+        @apply font-sans;
+    }
+    body {
+        @apply bg-background text-foreground;
+    }
+    button:not(:disabled),
+    [role="button"]:not(:disabled) {
+        cursor: pointer;
+    }
+    /* §6.1: visible 2 px primary ring with 2 px offset */
+    :focus-visible {
+        outline: 2px solid var(--ring);
+        outline-offset: 2px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
+}

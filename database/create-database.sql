@@ -1,5 +1,5 @@
-IF DB_ID(N'customer_management') IS NULL
+IF DB_ID(N'hola_nest') IS NULL
 BEGIN
-    CREATE DATABASE customer_management;
+    CREATE DATABASE hola_nest;
 END;
 GO
